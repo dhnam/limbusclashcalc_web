@@ -66,6 +66,7 @@
       justify-content: center;
       width: 100px;
       height: 140px;
+      flex-direction: column;
     }
 
     .base-power input {
@@ -92,17 +93,53 @@
       padding: 0.2rem;
     }
 
-    .top-section {
-      grid-column: 2;
+    .input-img-wrapper {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 0.25rem;
+      justify-content: center;
+      position: relative;
+      height: 100%;
     }
 
-    .top-section input {
+
+    .top-section-grid {
+      display: grid;
+      grid-template-columns: auto 3rem auto 3rem; /* 연산자(+) + input 너비 고려 */
+      grid-template-rows: auto auto; /* 라벨, input 두 줄 */
+      column-gap: 0.25rem;
+      align-items: center;
+      justify-content: center;
+      width: max-content;
+      font-family: sans-serif;
+    }
+
+    .input-label {
+      font-size: 0.75rem;
+      color: #555;
+      text-align: center;
+      margin-bottom: 0.25rem;
+      user-select: none;
+    }
+
+    .op-symbol {
+      font-weight: bold;
+      font-size: 1.25rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .op-symbol.blank {
+      visibility: hidden; /* 빈 공간 차지용 */
+    }
+
+    .top-section-grid input {
       width: 3rem;
       text-align: center;
       padding: 0.25rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
     }
 
     .bottom-section {
@@ -147,11 +184,29 @@
       text-align: center;
     }
 
-    .op-symbol {
-      font-weight: bold;
+    .input-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      height: 100%;
     }
 
-    .result-container {
+    .input-label {
+      font-size: 0.75rem;
+      color: #555;
+      margin-bottom: 0.25rem;
+      text-align: center;
+      line-height: 1;
+    }
+
+    /* 아래쪽에 붙는 라벨용 클래스 */
+    .input-label.below {
+      margin-top: 0.25rem;
+      margin-bottom: 0;
+    }
+
+  .result-container {
       display: flex;
       gap: 1rem;
       justify-content: center;
@@ -164,6 +219,7 @@
     @media (max-width: 768px) {
       .result-container {
         flex-direction: column;
+        align-items: center;
       }
     }
 
@@ -172,7 +228,7 @@
       border-radius: 12px;
       padding: 1rem;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      font-family: monospace;
+      font-family: sans-serif;
       white-space: pre-wrap;
       width: 320px;
       max-width: 90vw;
@@ -238,52 +294,84 @@
 <body>
   <div class="skill-container">
     <div class="skill-input-wrapper">
-      <h3 class="skill-label">Skill 1</h3>
+      <h3 class="skill-label" id="skill1-label">Skill 1</h3>
       <div class="skill-input-container" id="input1">
         <div class="base-power">
-          <img src="assets/normal_coin.webp" alt="Base Power" class="base-power-image" />
-          <input type="number" class="input-base" placeholder="0" />
+          <label class="input-label" id="input1-base">Base Power</label>
+          <div class="input-img-wrapper">
+            <img src="assets/normal_coin.webp" alt="Base Power" class="base-power-image" />
+            <input type="number" class="input-base" placeholder="0" />
+          </div>
         </div>
-        <div class="top-section">
+        <div class="top-section-grid">
+          <!-- 1행: 연산자(빈칸), Coin Power 라벨, 연산자(빈칸), Coin Count 라벨 -->
+          <span class="op-symbol blank"></span>
+          <label class="input-label" for="coin-power-input" id="input1-coinp">Coin Power</label>
+          <span class="op-symbol blank"></span>
+          <label class="input-label" for="coin-count-input" id="input1-coinc">Coin Count</label>
+
+          <!-- 2행: 연산자 +, Coin Power input, 연산자 ×, Coin Count input -->
           <span class="op-symbol">+</span>
-          <input type="text" inputmode="numeric" pattern="-?[0-9]*" class="input-coin-power" placeholder="0" />
+          <input id="coin-power-input" type="text" inputmode="numeric" pattern="-?[0-9]*" class="input-coin-power" placeholder="0" />
           <span class="op-symbol">×</span>
-          <input type="number" class="input-coin-count" placeholder="0" />
+          <input id="coin-count-input" type="number" class="input-coin-count" placeholder="0" />
         </div>
         <div class="bottom-section">
-          <div class="paralyze-box">
-            <span class="paralyze-icon">⚡</span>
-            <input type="number" class="input-paralyze" placeholder="0" />
+          <div class="input-wrapper">
+            <div class="paralyze-box">
+              <span class="paralyze-icon">⚡</span>
+              <input type="number" class="input-paralyze" placeholder="0" />
+            </div>
+            <label class="input-label below" id="input1-para">Paralyze</label>
           </div>
-          <div class="circle-sanity">
-            <input type="text" inputmode="numeric" pattern="-?[0-9]*" class="input-sanity" placeholder="0" min="-45"
-              max="45" />
+          <div class="input-wrapper">
+            <div class="circle-sanity">
+              <input type="text" inputmode="numeric" pattern="-?[0-9]*" class="input-sanity" placeholder="0" min="-45"
+                max="45" />
+            </div>
+            <label class="input-label below" id="input1-san">Sanity</label>
           </div>
         </div>
       </div>
     </div>
 
     <div class="skill-input-wrapper">
-      <h3 class="skill-label">Skill 2</h3>
+      <h3 class="skill-label" id="skill2-label">Skill 2</h3>
       <div class="skill-input-container" id="input2">
         <div class="base-power">
-          <img src="assets/normal_coin.webp" alt="Base Power" class="base-power-image" />
-          <input type="number" class="input-base" placeholder="0" />
+          <label class="input-label" id="input2-base">Base Power</label>
+          <div class="input-img-wrapper">
+            <img src="assets/normal_coin.webp" alt="Base Power" class="base-power-image" />
+            <input type="number" class="input-base" placeholder="0" />
+          </div>
         </div>
-        <div class="top-section">
+        <div class="top-section-grid">
+          <!-- 1행: 연산자(빈칸), Coin Power 라벨, 연산자(빈칸), Coin Count 라벨 -->
+          <span class="op-symbol blank"></span>
+          <label class="input-label" for="coin-power-input" id="input2-coinp">Coin Power</label>
+          <span class="op-symbol blank"></span>
+          <label class="input-label" for="coin-count-input" id="input2-coinc">Coin Count</label>
+
+          <!-- 2행: 연산자 +, Coin Power input, 연산자 ×, Coin Count input -->
           <span class="op-symbol">+</span>
-          <input type="text" inputmode="numeric" pattern="-?[0-9]*" class="input-coin-power" placeholder="0" />
+          <input id="coin-power-input" type="text" inputmode="numeric" pattern="-?[0-9]*" class="input-coin-power" placeholder="0" />
           <span class="op-symbol">×</span>
-          <input type="number" class="input-coin-count" placeholder="0" />
+          <input id="coin-count-input" type="number" class="input-coin-count" placeholder="0" />
         </div>
         <div class="bottom-section">
-          <div class="paralyze-box">
-            <span class="paralyze-icon">⚡</span>
-            <input type="number" class="input-paralyze" placeholder="0" />
+          <div class="input-wrapper">
+            <div class="paralyze-box">
+              <span class="paralyze-icon">⚡</span>
+              <input type="number" class="input-paralyze" placeholder="0" />
+            </div>
+            <label class="input-label below" id="input2-para">Paralyze</label>
           </div>
-          <div class="circle-sanity">
-            <input type="text" inputmode="numeric" pattern="-?[0-9]*" class="input-sanity" placeholder="0" min="-45"
-              max="45" />
+          <div class="input-wrapper">
+            <div class="circle-sanity">
+              <input type="text" inputmode="numeric" pattern="-?[0-9]*" class="input-sanity" placeholder="0" min="-45"
+                max="45" />
+            </div>
+            <label class="input-label below" id="input2-san">Sanity</label>
           </div>
         </div>
       </div>
@@ -291,7 +379,7 @@
   </div>
 
   <div style="text-align: center; margin-bottom: 2rem;">
-    <button class="clash-button" onclick="runClash()">Clash</button>
+    <button class="clash-button" id="clashButton" onclick="runClash()">Clash</button>
   </div>
 
   <div class="result-container" id="resultContainer">
@@ -304,6 +392,31 @@
   </div>
 
   <script>
+    const userLang = navigator.language || navigator.userLanguage || 'en'
+    skillOneWinText = "Skill 1 wins"
+    skillTwoWinText = "Skill 2 wins"
+    coinText = "Coin"
+    if (userLang.startsWith("ko")) {
+      document.title = "림버스 합 계산기"
+      document.getElementById("clashButton").innerText = "합 계산"
+      document.getElementById("skill1-label").innerText = "스킬 1"
+      document.getElementById("input1-base").innerText = "기본 위력"
+      document.getElementById("input1-coinp").innerText = "코인 위력"
+      document.getElementById("input1-coinc").innerText = "코인 갯수"
+      document.getElementById("input1-para").innerText = "마비"
+      document.getElementById("input1-san").innerText = "정신력"
+      document.getElementById("skill2-label").innerText = "스킬 2"
+      document.getElementById("input2-base").innerText = "기본 위력"
+      document.getElementById("input2-coinp").innerText = "코인 위력"
+      document.getElementById("input2-coinc").innerText = "코인 갯수"
+      document.getElementById("input2-para").innerText = "마비"
+      document.getElementById("input2-san").innerText = "정신력"
+      skillOneWinText = "스킬 1 승리"
+      skillTwoWinText = "스킬 2 승리"
+      coinText = "코인"
+    }
+    
+
     function extractSkillData(containerId) {
       const container = document.getElementById(containerId);
       const base = parseInt(container.querySelector(".input-base").value) || 0;
@@ -325,8 +438,8 @@
       const resultBox = document.getElementById("resultContainer");
       resultBox.style.display = "flex";
 
-      out1.innerHTML = generateResultHTML(result[0], "Left wins", true);
-      out2.innerHTML = generateResultHTML(result[1], "Right wins", false);
+      out1.innerHTML = generateResultHTML(result[0], skillOneWinText, true);
+      out2.innerHTML = generateResultHTML(result[1], skillTwoWinText, false);
     }
 
     function generateResultHTML(data, label, isLeft) {
@@ -347,7 +460,7 @@
         const group = coinGroups[coinCount];
         const subgroupTotal = group.reduce((sum, r) => sum + r.probability, 0);
         const groupId = `${label.replace(/\s+/g, "")}_group_${coinCount}`;
-        html += `<div class="result-line" onclick="toggleVisibility(this.nextElementSibling)">▶ Coin ${coinCount}: ${(subgroupTotal * 100).toFixed(3)}%</div>`;
+        html += `<div class="result-line" onclick="toggleVisibility(this.nextElementSibling)">▶ ${coinText} ${coinCount}: ${(subgroupTotal * 100).toFixed(3)}%</div>`;
         html += `<div class="result-subgroup">`;
         group.forEach(r => {
           const p1 = isLeft ? r.paralyze : r.opp_paralyze;
