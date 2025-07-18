@@ -395,7 +395,7 @@
     const userLang = navigator.language || navigator.userLanguage || 'en'
     skillOneWinText = "Skill 1 wins"
     skillTwoWinText = "Skill 2 wins"
-    coinText = "Coin"
+    coinText = "%d Coin Left"
     if (userLang.startsWith("ko")) {
       document.title = "림버스 합 계산기"
       document.getElementById("clashButton").innerText = "합 계산"
@@ -413,7 +413,7 @@
       document.getElementById("input2-san").innerText = "정신력"
       skillOneWinText = "스킬 1 승리"
       skillTwoWinText = "스킬 2 승리"
-      coinText = "코인"
+      coinText = "코인 %d개 남음"
     }
     
 
@@ -460,7 +460,8 @@
         const group = coinGroups[coinCount];
         const subgroupTotal = group.reduce((sum, r) => sum + r.probability, 0);
         const groupId = `${label.replace(/\s+/g, "")}_group_${coinCount}`;
-        html += `<div class="result-line" onclick="toggleVisibility(this.nextElementSibling)">▶ ${coinText} ${coinCount}: ${(subgroupTotal * 100).toFixed(3)}%</div>`;
+        let newCoinText = coinText.replace("%d", coinCount)
+        html += `<div class="result-line" onclick="toggleVisibility(this.nextElementSibling)">▶ ${newCoinText}: ${(subgroupTotal * 100).toFixed(3)}%</div>`;
         html += `<div class="result-subgroup">`;
         group.forEach(r => {
           const p1 = isLeft ? r.paralyze : r.opp_paralyze;
