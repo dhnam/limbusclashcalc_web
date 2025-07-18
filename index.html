@@ -204,6 +204,28 @@
   display: block;
 }
 
+.footer {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-family: sans-serif;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.footer a {
+  color: #007acc;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s ease;
+}
+
+.footer a:hover {
+  color: #005fa3;
+  text-decoration: underline;
+}
+
+
 </style>
 </head>
 <body>
@@ -268,6 +290,10 @@
   <div class="result-box" id="output2"></div>
 </div>
 
+<div class="footer">
+  <a href="https://github.com/dhnam/limbusclashcalc_web" target="_blank" rel="noopener noreferrer">github</a>
+</div>
+
 <script>
 function extractSkillData(containerId) {
   const container = document.getElementById(containerId);
@@ -317,7 +343,7 @@ function generateResultHTML(data, label, isLeft) {
     group.forEach(r => {
       const p1 = isLeft ? r.paralyze : r.opp_paralyze;
       const p2 = isLeft ? r.opp_paralyze : r.paralyze;
-      const line = `&lt;-⚡${p1} / ⚡${p2}-&gt;: ${(r.probability * 100).toFixed(3)}%`;
+      const line = `🡸⚡${p1} / ⚡${p2} 🡺: ${(r.probability * 100).toFixed(3)}%`;
       html += `<div class="result-line">${line}</div>`;
     });
     html += `</div>`;
