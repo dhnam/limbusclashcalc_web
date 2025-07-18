@@ -343,7 +343,7 @@ function generateResultHTML(data, label, isLeft) {
     group.forEach(r => {
       const p1 = isLeft ? r.paralyze : r.opp_paralyze;
       const p2 = isLeft ? r.opp_paralyze : r.paralyze;
-      const line = `🡸⚡${p1} / ⚡${p2} 🡺: ${(r.probability * 100).toFixed(3)}%`;
+      const line = `←⚡${p1} / ⚡${p2} →: ${(r.probability * 100).toFixed(3)}%`;
       html += `<div class="result-line">${line}</div>`;
     });
     html += `</div>`;
